@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <RootNamespace>Kubernetes.Repository</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AppConfiguration\AppConfiguration.csproj" />
+    <ProjectReference Include="..\DataReaderMapper\DataReaderMapper.csproj" />
+    <ProjectReference Include="..\TransferObjects\TransferObjects.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,9 @@
+
+{
+    "region" : "us-west-2",
+    "profile" : "NetCore_ecr",
+    "configuration" : "Release",
+    "tag"           : "web:latest",
+    "docker-build-working-dir" : "",
+    "vstoolkit-deployment-mode" : "PushOnly"
+}

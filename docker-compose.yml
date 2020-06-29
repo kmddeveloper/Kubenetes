@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+  web:
+    image: ${DOCKER_REGISTRY-}web
+    build:
+      context: .
+      dockerfile: Kubernetes/Dockerfile
+    ports:
+       - "8080:5000"
+
+            
