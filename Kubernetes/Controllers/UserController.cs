@@ -172,7 +172,7 @@ namespace Web.Controllers
             "Message4",
             "Message5",
             "Message6",
-            "Message7"f
+            "Message7"
         };
 
             foreach (var message in messages)
