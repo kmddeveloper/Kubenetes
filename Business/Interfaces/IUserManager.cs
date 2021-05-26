@@ -9,5 +9,8 @@ namespace Kubernetes.Business
     public interface IUserManager
     {
         Task<User> GetUserByIdAsync(int Id);
+        Task<User> GetFakeUserByIdAsync(int Id);
+
+        Task<User> PassFakeUserAysnc(Func<User> action);
     }
 }
