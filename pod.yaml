@@ -109,4 +109,3 @@ status:
   - ip: 10.1.0.23
   qosClass: BestEffort
   startTime: "2020-06-18T23:49:31Z"
-  
