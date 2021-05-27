@@ -61,24 +61,7 @@ namespace xUnitTest
             concatOutput("test1", "test2");
         }
 
-        [Fact]
-        public void TestCPU()
-        {
-            int cpuUsage = 50;
-            int time = 10000;
-            List<Thread> threads = new List<Thread>();
-            for (int i = 0; i < Environment.ProcessorCount; i++)
-            {
-                Thread t = new Thread(new ParameterizedThreadStart(CPUKill));
-                t.Start(cpuUsage);
-                threads.Add(t);
-            }
-            Thread.Sleep(time);
-            foreach (var t in threads)
-            {
-                t.Abort();
-            }
-        }
+      
 
 
         void CPUKill(object cpuUsage)
