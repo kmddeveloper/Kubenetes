@@ -6,12 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Kubernetes.TransferObjects;
 using Kubernetes.Business;
-using Castle.Core.Logging;
-using Microsoft.Extensions.Logging;
 using System.Net.WebSockets;
-using System.Text;
+using Microsoft.Extensions.Logging;
 using System.Threading;
-using System.Diagnostics;
+using System.Text;
 
 namespace Web.Controllers
 {
@@ -20,13 +18,10 @@ namespace Web.Controllers
     public class UserController : ControllerBase
     {
         readonly IUserManager _userManager;
-        readonly ITokenManager _tokenManager;
-
-        readonly ILogger<UserController> _logger; 
-        public UserController(IUserManager userManager, ITokenManager tokenManager,  ILogger<UserController> logger)
+        readonly ILogger _logger;
+        public UserController(IUserManager userManager, ILogger<UserController> logger)
         {
             _userManager = userManager;
-            _tokenManager = tokenManager;
             _logger = logger;
         }
 
@@ -34,61 +29,25 @@ namespace Web.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-
-            var token = _tokenManager.CreateJWT();
-
-            return new string[] { token.Access_Token };
+            return new string[] { "value1", "value2" };
         }
-        // http://localhost/netcore/api/user/5
+
         // GET: api/User/5
         [HttpGet("{id}", Name = "Get")]
-        public async Task<ActionResult> Get(int id)
+        public string Get(int id)
         {
-            try
-            {
-
-
-                var context = ControllerContext.HttpContext;
-                var isSocketRequest = context.WebSockets.IsWebSocketRequest;
-
-                if (isSocketRequest)
-                {
-                    using (WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync())
-                    {
-                        var user1 = await _userManager.PassFakeUserAysnc(() => { return new User { Id = 1, FirstName = "Pearl", LastName = "Diep" }; });
-                        await GetMessages(context, webSocket);
-                        return new EmptyResult();
-                       
-                    }
-                   
-                }
-                else
-                {
-
-                    var user1 = await _userManager.PassFakeUserAysnc(() => { return new User { Id = 1, FirstName = "Pearl", LastName = "Diep" }; });
-                    var user = await _userManager.GetFakeUserByIdAsync(id);
-                    return Ok(user);
-                }
-            }
-            catch(Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return "value";
         }
 
         // POST: api/User
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] Registration registration)
+        public async Task<ActionResult> Post([FromBody] User user)
         {
-            _logger.LogWarning($"{DateTime.Now} --  Executing user controller");
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
-            
-            var result =  await _userManager.GetFakeUserByIdAsync(5);
+            var result =  await _userManager.GetUserByIdAsync(user.Id);
             return Ok(result);
 
         }
@@ -187,6 +146,7 @@ namespace Web.Controllers
 
             await webSocket.SendAsync(new ArraySegment<byte>(Encoding.ASCII.GetBytes("DONE")), WebSocketMessageType.Text, true, CancellationToken.None);
         }
+
 
         // PUT: api/User/5
         [HttpPut("{id}")]

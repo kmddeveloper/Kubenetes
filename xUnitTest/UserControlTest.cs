@@ -6,12 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using Web;
 using Xunit;
@@ -19,17 +17,8 @@ using Xunit.Extensions;
 
 namespace xUnitTest
 {
-    public class CustomData
-    {
-        public long CreationTime;
-        public int Name;
-        public int ThreadNum;
-    }
-
     public class UserControlTest: IClassFixture<WebApplicationFactory<Startup>>
     {
-
-        public Func<string, string, string> concat = (x, y) => { return $"{x} {y}"; };
 
         readonly WebApplicationFactory<Startup> _factory;
 
@@ -45,68 +34,7 @@ namespace xUnitTest
             {
                 new object[] { 1, "Kevin" }
             };
-              
-        
-        [Fact]
-        public void TestDelegate()
-        {
-            Debug.WriteLine("this is a test");
-            Action<string, string> concatOutput = (x, y) => { Debug.WriteLine($"{x} {y}"); };
-
-            var s1 = test(concat);
-               
-
-            var s = concat("test1", "test2");
-
-            concatOutput("test1", "test2");
-        }
-
-        [Fact]
-        public void TestCPU()
-        {
-            int cpuUsage = 50;
-            int time = 10000;
-            List<Thread> threads = new List<Thread>();
-            for (int i = 0; i < Environment.ProcessorCount; i++)
-            {
-                Thread t = new Thread(new ParameterizedThreadStart(CPUKill));
-                t.Start(cpuUsage);
-                threads.Add(t);
-            }
-            Thread.Sleep(time);
-            foreach (var t in threads)
-            {
-                t.Abort();
-            }
-        }
-
-
-        void CPUKill(object cpuUsage)
-        {
-            Parallel.For(0, 1, new Action<int>((int i) =>
-            {
-                Stopwatch watch = new Stopwatch();
-                watch.Start();
-                while (true)
-                {
-                    if (watch.ElapsedMilliseconds > (int)cpuUsage)
-                    {
-                        Thread.Sleep(100 - (int)cpuUsage);
-                        watch.Reset();
-                        watch.Start();
-                    }
-                }
-            }));
-
-        }
-
-        public string test(Func<string,string, string> combine)
-        {
-            return combine("test3", "test4");
-
-        }
-
-
+                 
 
         [Theory]
         [MemberData(nameof(UserData))]   
@@ -117,11 +45,9 @@ namespace xUnitTest
             var payload = JsonConvert.SerializeObject(input);
 
             HttpContent content = new StringContent(payload, Encoding.UTF8, "application/json");
-
             // Act
             var client = _factory.CreateClient();
-            //client.BaseAddress = new Uri("http://localhost:60667");
-            var response = await client.PostAsync("/api/user/GetUserPost", content);
+            var response = await client.PostAsync("/api/user", content);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
 
