@@ -22,4 +22,4 @@ jobs:
     - name: Build
       run: dotnet build Kubernetes.sln --no-restore
     - name: Test
-      run: Kubenetes/dotnet test --no-build --verbosity normal
+      run: dotnet test xUnitTest --no-build --verbosity normal
