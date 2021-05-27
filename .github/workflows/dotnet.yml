@@ -29,6 +29,6 @@ jobs:
         image: kmddeveloper/web
         tags: latest
         registry: docker.io 
-        dockerfile: Web/Dockerfile
+        dockerfile: Kubernetes/Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
