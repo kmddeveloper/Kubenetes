@@ -21,6 +21,7 @@ jobs:
         account_id: ${{ secrets.AWS_ACCOUNT_ID }}
         repo: netcore
         path: Kubernetes
+        dockerfile: Dockerfile
         region: us-west-2  # change as needed
         tags: ${{ github.sha }}
         create_repo: true
