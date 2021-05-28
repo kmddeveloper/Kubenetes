@@ -14,7 +14,7 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: AWS ECR
-      uses: kciter/aws-ecr-action@v1
+      uses: kciter/aws-ecr-action@v3
       with:
         access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
