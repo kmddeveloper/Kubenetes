@@ -14,12 +14,12 @@ jobs:
 
     # Runs a single command using the runners shell
     - name: AWS ECR
-      uses: kciter/aws-ecr-action@v3
+      uses: docker://ghcr.io/kciter/aws-ecr-action:latest
       with:
         access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-        repo: 334482770218.dkr.ecr.us-west-2.amazonaws.com/netcore
+        repo: netcore
         dockerfile: Kubernetes/Dockerfile
         region: us-west-2  # change as needed
         tags: ${{ github.sha }}
