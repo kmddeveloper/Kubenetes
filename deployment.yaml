@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+spec:
+  selector:
+    app: webapi
+    tier: frontend
+  ports:
+  - protocol: "TCP"
+    port: 80
+    targetPort: 5000
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  selector:
+    matchLabels:
+      app: webapi
+      tier: frontend
+      track: stable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: webapi
+        tier: frontend
+        track: stable
+    spec:
+      containers:
+      - name: nginx
+        image: "kmddeveloper/web:latest"
+        imagePullPolicy: Always
+       
+        
