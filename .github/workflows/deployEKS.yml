@@ -1,20 +1,24 @@
-name: Build and Deploy to Docker Image
-on: push
+name: CI
+
+on:
+  - push
+
 jobs:
-  little-ci-and-little-cd:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Push image and deploy
-        uses: observian/littleci-littlecd-eks@master
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-          repo: netcore
-          region: us-west-2
-          tags: 0.1.1.${{ github.run_number }},${{ github.sha }}
-          eks_cluster_name: webapp
-          k8s_manifest: your-k8s-manifest-template.yml
-          k8s_image_tag: 0.1.1.${{ github.run_number }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+
+      - name: Trigger deploy
+        uses: Consensys/kubernetes-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        with:
+          args: apply deployment.yaml
