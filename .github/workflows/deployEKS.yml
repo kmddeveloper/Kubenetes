@@ -9,8 +9,8 @@ jobs:
       - name: Push image and deploy
         uses: observian/littleci-littlecd-eks@master
         with:
-          access_key_id: ${{ secrets.ACCESS_KEY_ID }}
-          secret_access_key: ${{ secrets.SECRET_ACCESS_KEY }}
+          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           account_id: ${{ secrets.AWS_ACCOUNT_ID }}
           repo: netcore
           region: us-west-2
